@@ -1,15 +1,30 @@
 <script setup>
 import { RouterView, RouterLink } from "vue-router";
 import { useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import api from "./api"; 
+import Navbar from "./components/Navbar.vue";
+import { provide } from 'vue'
 
+const name = ref(false);
+provide('name',name)
 const router = useRouter();
 const isLoggedIn = ref(false);
 
 onMounted(() => {
   isLoggedIn.value = !!localStorage.getItem("token");
 });
+
+watch(async () =>{
+  if(isLoggedIn){
+    const token = localStorage.getItem("token");
+    const result = await api.get("/user", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(result);
+    name.value=result.data.name;
+  }
+})
 
 window.addEventListener("login", () => {
   isLoggedIn.value = true;
@@ -34,11 +49,9 @@ const logout = async () => {
 </script>
 
 <template>
+  <Navbar ></Navbar>
   <nav>
-    <RouterLink to="/cars">Home</RouterLink> |
-    <RouterLink to="/register">Register</RouterLink> |
-    <RouterLink to="/login">Login</RouterLink>
-    <button v-if="isLoggedIn" @click="logout">Logout</button>
+    
   </nav>
   <main>
     <RouterView />
