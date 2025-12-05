@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import api from "../api.js";
+import CarDetails from "@/components/CarDetails.vue";
+import Gomb from "@/components/Gomb.vue";
 
 const cars = ref([]);
 const message = ref("");
@@ -25,14 +27,27 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <h1>Saját kocsik</h1>
-    <p v-if="message">{{ message }}</p>
-    <ul>
-      <li v-for="car in cars" :key="car.id">
-        {{ car.brand }} – {{ car.model }}
-      </li>
-    </ul>
+  <div class="text-xl my-5" style="text-align: center;" v-if="message">
+    <p>{{ message }}</p><br>
+    <RouterLink to="/login">
+      <Gomb cim="Bejelentkezés"
+        class="font-medium transform ease-out duration-700 motion-safe:hover:scale-120 bg-gray-500 drop-shadow-sm rounded-md px-4 text-white">
+      </Gomb>
+    </RouterLink>
   </div>
-  
+  <div v-else>
+    <div style="text-align: center; font-size: 30px;font-weight: 600;" class="my-4">
+      <h1 class="">Saját kocsik</h1>
+    </div>
+
+    <div class="flex flex-col">
+
+      <div v-for="car in cars" :key="car.id">
+        <CarDetails :car="car"></CarDetails>
+      </div>
+    </div>
+
+
+  </div>
+
 </template>

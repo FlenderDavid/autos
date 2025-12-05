@@ -2,7 +2,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import api from "../api.js";
+import { inject } from "vue";
 
+const isLoggedIn = inject("isLoggedIn");
 const name = ref("");
 const password = ref("");
 const message = ref("");
@@ -12,7 +14,7 @@ const login = async () => {
   try {
     const res = await api.post("/login", { name: name.value, password: password.value });
     const token = res.data.access_token;
-
+    isLoggedIn.value = true;
     localStorage.setItem("token", token);
     window.dispatchEvent(new Event("login"));
 
