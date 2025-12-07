@@ -15,8 +15,7 @@ defineProps({
             <p class="text-xl px-9 mt-5">Rendszám: {{ car.number_plate ? car.number_plate : "Nincsen autóhoz tartozó rendszám!" }}</p>
         </div>
         <div style="text-align: center; justify-content: center;" class="gap-9 flex mt-5 mb-2">
-            <Gomb cim="Új szervíz"></Gomb>
-            <Gomb cim="Összes szervíz"></Gomb>
+            <Gomb cim="Új szervíz" :to="`/cars/${car.id}/service/create`"></Gomb>
         </div>
     </div>
 </template>
